@@ -25,9 +25,9 @@ Vähän ohjeita
 -----------
 Mene wp-content/plugins -hakemistoon
 ```
-git clone https://github.com/asteriskiry/wp-arkisto.git
+git clone https://github.com/asteriskiry/wp-tenttiarkisto.git
 ```
-Plugin luo automaattisesti sivut example.com/tentit, mutta niille generoituu sisältöä vasta kun ensimmäiset pöytäkirjat/tentit lisätään
+Plugin luo automaattisesti sivun example.com/tentit, mutta sille generoituu sisältöä vasta kun ensimmäiset tentit lisätään
 
 ---
 © Asteriski ry

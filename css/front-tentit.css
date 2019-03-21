@@ -1,0 +1,358 @@
+/**
+ * Tenttien frontin tyylit
+ **/
+
+input[type=search] {
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: white;
+    background-image: url('../img/search.png');
+    background-position: 5px 5px; 
+    background-repeat: no-repeat;
+    padding: 5px 5px 5px 30px;
+    -webkit-transition: 0.4s ease-in-out;
+    transition: 0.4s ease-in-out;
+    width: 60%;
+    margin-bottom: 10px;
+}
+input[type=search]:focus {
+    width: 90%;
+    box-shadow: 0px 0px 2px rgba(0, 193, 97, .8);
+    border: 2px solid rgba(0, 193, 97, .5);
+    background-color: #f3f3d8;
+}
+
+/*************************
+ * Tenttien archive-sivu *
+ *************************/
+
+.t-indeksit {
+    background-color: #2c8f43 !important;
+    color: #fff;
+}
+.t-indeksit:hover {
+    background-color: #247c39 !important;
+    color: #fff;
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    transition: all .3s ease;
+}
+#t-dropdown-li {
+    list-style-type: none;
+    margin-bottom: 10px;
+}
+#t-taulukko a {
+    color: #2c8f43;
+    font-size: 1.1em;
+}
+#t-taulukko {
+    padding-top: 10px;
+}
+.page-title-wrap {
+    display: none;
+}
+.customtitle {
+    padding-bottom: 20px;
+}
+
+/*************************
+ * Kurssien archive-sivu *
+ *************************/
+
+.t-k-indeksit {
+    background-color: #2c8f43 !important;
+    color: #fff;
+}
+.t-k-indeksit:hover {
+    background-color: #247c39 !important;
+    color: #fff;
+    -webkit-k-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    transition: all .3s ease;
+}
+#t-k-dropdown-li {
+    list-k-style-type: none;
+    margin-bottom: 10px;
+}
+#t-k-taulukko a {
+    color: #2c8f43;
+    font-k-size: 1.1em;
+}
+#t-k-taulukko {
+    padding-top: 10px;
+}
+.page-title-wrap {
+    display: none;
+}
+.customtitle {
+    padding-bottom: 20px;
+}
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+.tooltip .tooltipimg {
+    opacity: 0;
+    transition: opacity 0.7s;
+    border-radius: 6px;
+    border: 1px solid #2c8f43;
+    box-shadow: 2px 2px 4px #556b55;
+
+    position: absolute;
+    left: 110%;
+    z-index: 1;
+}
+.tooltip:hover .tooltipimg {
+    opacity: 0.8;
+}
+.t-k-buttons a {
+    padding: 0 20px 0 20px;
+    background-color: #2c8f43;
+    color: white;
+    font-weight: 300;
+    font-size: 15px;
+    text-decoration: none;
+    text-align: center;
+    line-height: 40px;
+    height: 40px;
+    margin: 0;
+    display: inline-block;
+    cursor: pointer;
+    border: none;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-transition-property: all;
+    transition-property: all;
+    -webkit-transition-duration: .3s;
+    transition-duration: .3s;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px transparent;
+
+}
+.t-k-buttons a:visited {
+    color: #666666;
+    color: white;
+}
+.t-k-buttons a:hover, .t-buttons a:focus {
+    background-color: #35a64f;
+    text-decoration: none;
+    border-color: #fec04e;
+    color: white;
+    outline: none;
+}
+.t-k-buttons a:active, .t-k-buttons.active, .t-k-buttons.is-active {
+    text-shadow: 0 1px 0 rgba(255, 0, 0, 0.3);
+    text-decoration: none;
+    border-color: #cfcfcf;
+    color: #1c5f2c;
+    background-color: #247c39;
+    -webkit-transition-duration: 0s;
+    transition-duration: 0s;
+    -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/************************
+ *      Single-sivu     *
+ ************************/
+
+
+@media screen and (max-width: 830px) {
+    .t-single-meta  {
+        width: 100%;
+    }
+    .t-thumb {
+        width: 100%;
+    }
+}
+@media screen and (min-width: 831px) {
+    .t-single-meta  {
+        width: 46%;
+    }
+    .t-thumb {
+        width: 46%;
+    }
+}
+
+.t-grid {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+}
+.t-single-meta {
+    text-align: center;
+    margin: 15px;
+}
+.t-thumb {
+    margin: 15px;
+}
+.t-single-meta-content {
+    height: 90%;
+    margin: 0;
+}
+
+/* Napit ja animaatiot */
+
+.t-buttons a {
+    background-color: #2c8f43;
+    color: white;
+    width: 100%;
+    font-weight: 300;
+    font-size: 15px;
+    text-decoration: none;
+    text-align: center;
+    line-height: 40px;
+    height: 40px;
+    padding: 0 15px;
+    margin: 0;
+    display: inline-block;
+    cursor: pointer;
+    border: none;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-transition-property: all;
+    transition-property: all;
+    -webkit-transition-duration: .3s;
+    transition-duration: .3s;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px transparent;
+    padding-left: 2.2em;
+}
+.t-buttons a:visited {
+    color: #666666;
+    color: white;
+}
+.t-buttons a:hover, .t-buttons a:focus {
+    background-color: #35a64f;
+    text-decoration: none;
+    border-color: #fec04e;
+    color: white;
+    outline: none;
+}
+.t-buttons a:active, .t-buttons.active, .t-buttons.is-active {
+    text-shadow: 0 1px 0 rgba(255, 0, 0, 0.3);
+    text-decoration: none;
+    border-color: #cfcfcf;
+    color: #1c5f2c;
+    background-color: #247c39;
+    -webkit-transition-duration: 0s;
+    transition-duration: 0s;
+    -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+.t-buttons-left {
+    width: 50%;
+    float: left;
+}
+.t-buttons-right {
+    width: 50%;
+    float: right;
+}
+.t-buttons-left a {
+    background-color: #2c8f43;
+    color: white;
+    width: 100%;
+    font-weight: 300;
+    font-size: 15px;
+    text-decoration: none;
+    text-align: center;
+    line-height: 40px;
+    height: 40px;
+    padding: 0 15px;
+    margin: 0;
+    display: inline-block;
+    cursor: pointer;
+    border: none;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-transition-property: all;
+    transition-property: all;
+    -webkit-transition-duration: .3s;
+    transition-duration: .3s;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px transparent;
+}
+.t-buttons-left a:visited {
+    color: #666666;
+    color: white;
+}
+.t-buttons-left a:hover, .t-buttons-left a:focus {
+    background-color: #35a64f;
+    text-decoration: none;
+    border-color: #fec04e;
+    color: white;
+    outline: none;
+}
+.t-buttons-left a:active, .t-buttons-left.active, .t-buttons-left.is-active {
+    text-shadow: 0 1px 0 rgba(255, 0, 0, 0.3);
+    text-decoration: none;
+    border-color: #cfcfcf;
+    color: #1c5f2c;
+    background-color: #247c39;
+    -webkit-transition-duration: 0s;
+    transition-duration: 0s;
+    -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+.t-buttons-right a {
+    background-color: #2c8f43;
+    color: white;
+    font-weight: 300;
+    width: 100%;
+    font-size: 15px;
+    text-decoration: none;
+    text-align: center;
+    line-height: 40px;
+    padding: 0 15px;
+    margin: 0;
+    display: inline-block;
+    cursor: pointer;
+    border: none;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-transition-property: all;
+    transition-property: all;
+    -webkit-transition-duration: .3s;
+    transition-duration: .3s;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px transparent;
+    padding-right: 2.2em;
+}
+.t-buttons-right a:visited {
+    color: #666666;
+    color: white;
+}
+.t-buttons-right a:hover, .t-buttons-right a:focus {
+    background-color: #35a64f;
+    text-decoration: none;
+    border-color: #fec04e;
+    color: white;
+outline: none; }
+
+.t-buttons-right a:active, .t-buttons-right.active, .t-buttons-right.is-active {
+    text-shadow: 0 1px 0 rgba(255, 0, 0, 0.3);
+    text-decoration: none;
+    border-color: #cfcfcf;
+    color: #1c5f2c;
+    background-color: #247c39;
+    -webkit-transition-duration: 0s;
+    transition-duration: 0s;
+    -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name: WP-Tenttiarkisto
+ * Plugin Name: WP Tenttiarkisto
  * Description: Tenttiarkisto
  * Plugin URI: https://asteriski.fi
  * Author: Maks Turtiainen, Asteriski ry

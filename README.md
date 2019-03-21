@@ -28,3 +28,6 @@ Mene wp-content/plugins -hakemistoon
 git clone https://github.com/asteriskiry/wp-arkisto.git
 ```
 Plugin luo automaattisesti sivut example.com/tentit, mutta niille generoituu sisältöä vasta kun ensimmäiset pöytäkirjat/tentit lisätään
+
+---
+© Asteriski ry

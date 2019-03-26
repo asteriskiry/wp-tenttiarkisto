@@ -60,7 +60,7 @@ while ( $pk_by_year->have_posts() ) : $pk_by_year->the_post();
 
     /* HTML: dynaamiset kentät*/
     echo '<tr class="item">';
-    echo '<td><div class="tooltip"><a class="hvr-grow-custom-smaller" href="' . $pdfurl . '">' . $title . '</a><img class="tooltipimg" src="' . $thumbnail  . '"></div></td>';
+    echo '<td><a class="hvr-grow-custom-smaller" href="' . $pdfurl . '">' . $title . '</a></td>';
     echo '<td> ' . $pm  . '</td>';
     echo '</tr>';
 endwhile;

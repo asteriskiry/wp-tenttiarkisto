@@ -6,9 +6,23 @@
 
 get_header();
 
-echo '<div id="kurssit-archive">';
-echo '<h1 class="customtitle">' . get_the_terms( $post->ID, 'kurssi' )[0]->name . '</h1>';
+/**
+ * Asteriski WP teemaa varten
+ */
+?>
 
+<header class="page-header">
+    <div class="overlay-dark"></div>
+    <div class="container breadcrumbs-wrapper">
+        <div class="breadcrumbs d-flex flex-column justify-content-center">
+            <?php echo '<h3>' . get_the_terms( $post->ID, 'kurssi' )[0]->name . '</h3>'; ?>
+        </div>
+    </div>
+</header>
+
+<div id="kurssit-archive">
+
+<?php
 $args_by_year = array(
     'post_type' 		=> 'tentit',
     'posts_per_page'        => -1,

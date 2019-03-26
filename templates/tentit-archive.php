@@ -5,19 +5,29 @@
  **/
 
 get_header();
+/**
+ * Asteriski WP teemaa varten
+ */
 ?>
 
-<div id="tentit-archive">
-    <h1 class="customtitle">Tenttiarkisto</h1>
+<header class="page-header">
+    <div class="overlay-dark"></div>
+    <div class="container breadcrumbs-wrapper">
+        <div class="breadcrumbs d-flex flex-column justify-content-center">
+            <h3><?php wp_title(''); ?></h3>
+        </div>
+    </div>
+</header>
 
 <?php
 $args = array( 'hide_empty=0' );
- 
+
 $terms = get_terms( 'kurssi', $args );
 if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
     $count = count( $terms );
     $yhtmaara = 0;
 ?>
+<div class="tentit">
     <table id="t-taulukko" class="row-border">
         <thead>
             <tr class="t-rivi">	
@@ -48,6 +58,7 @@ if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
     Tiina Nokelainen<br>
     tmknok [ät] utu.fi</p>';
 
+    echo '</div>';
     echo '</div>';
 }
 

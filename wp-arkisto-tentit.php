@@ -188,38 +188,24 @@ add_action('init', 'wpark_t_add_caps');
 
 function wpark_t_send_email($ID, $post)
 {
-    if ( get_post_type( $post ) == 'tentit' )
-    {
-        // Opintomateriaalivastaavan email
-        $opintomateriaalivastaava = get_option("opintomateriaalivastaava");
+    // Opintomateriaalivastaavan email
+    $opintomateriaalivastaava = get_option("opintomateriaalivastaava");
 
-        // Lähetä opintomateriaalivastaavalle
-        if ('pending' === $new_status && 'new' === $old_status && user_can($post->post_author, 'edit_exams') && ! user_can($post->post_author, 'publish_posts')) {
-            $edit_link                = get_edit_post_link($post->ID, '');
-            $preview_link             = get_permalink($post->ID) . '&preview=true';
-            $username                 = get_userdata($post->post_author);
-            $username_last_edit       = get_the_modified_author();
-            $subject                  = '[*] Uusi tentti odottaa hyväksymistäsi';
-            $message                  = 'Uusi tentti odottaa hyväksymistäsi.';
-            $message                 .= "\r\n\r\n";
-            $message                 .= 'Lisääjä' . ': ' . $username->user_login . "\r\n";
-            $message                 .= 'Otsikko' . ': ' . $post->post_title . "\r\n";
-            $message                 .= 'Viimeinen muokkaaja' . ': ' . $username_last_edit . "\r\n";
-            $message                 .= 'Viimeisen muokkauksen pvm' . ': ' . $post->post_modified;
-            $message                 .= "\r\n\r\n";
-            $message                 .= 'Julkaise tästä' . ': ' . $edit_link . "\r\n";
-            $result = wp_mail($opintomateriaalivastaava, $subject, $message);
-        }
-         // Lähetä tentin postaajalle ilmoitus hyväksymisestä
-        elseif ('pending' === $old_status && 'publish' === $new_status && user_can($post->post_author, 'edit_exams') && ! user_can($post->post_author, 'publish_exams')) {
-            $username = get_userdata($post->post_author);
-            $url      = get_permalink($post->ID);
-            $subject  = '[*] Lähettämäsi tentti hyväksytty';
-            $message  = 'Lähettämäsi tentti on nyt hyväksytty tenttiarkistoon!' . "\r\n\r\n";
-            $message .= $url;
-            $result = wp_mail($username->user_email, $subject, $message);
-        }
-    }
+    // Lähetä opintomateriaalivastaavalle
+    $edit_link                = get_edit_post_link($post->ID, '');
+    $preview_link             = get_permalink($post->ID) . '&preview=true';
+    $username                 = get_userdata($post->post_author);
+    $username_last_edit       = get_the_modified_author();
+    $subject                  = '[*] Uusi tentti odottaa hyväksymistäsi';
+    $message                  = 'Uusi tentti odottaa hyväksymistäsi.';
+    $message                 .= "\r\n\r\n";
+    $message                 .= 'Lisääjä' . ': ' . $username->user_login . "\r\n";
+    $message                 .= 'Otsikko' . ': ' . $post->post_title . "\r\n";
+    $message                 .= 'Viimeinen muokkaaja' . ': ' . $username_last_edit . "\r\n";
+    $message                 .= 'Viimeisen muokkauksen pvm' . ': ' . $post->post_modified;
+    $message                 .= "\r\n\r\n";
+    $message                 .= 'Julkaise tästä' . ': ' . $edit_link . "\r\n";
+    $result = wp_mail($opintomateriaalivastaava, $subject, $message);
 }
 add_action('pending_tentit', 'wpark_t_send_email', 10, 3);
 
@@ -235,12 +221,12 @@ function wpark_t_taxonomy_meta_box($post, $meta_box_properties)
     $current = ($postterms ? array_pop($postterms) : false);
     $current = ($current ? $current->term_id : 0); ?>
 
-<div id="taxonomy-<?php echo $taxonomy; ?>" class="categorydiv">
+    <div id="taxonomy-<?php echo $taxonomy; ?>" class="categorydiv">
 
-    <input type="text" class="kurssihaku" id="kurssi-input" onkeyup="wparkFilter()" placeholder="Hae kurssia..">
-    <div id="<?php echo $taxonomy; ?>-all" class="tabs-panel">
-        <input name="tax_input[<?php echo $taxonomy; ?>][]" value="0" type="hidden">            
-        <ul id="<?php echo $taxonomy; ?>checklist" data-wp-lists="list:symbol" class="categorychecklist form-no-clear">
+        <input type="text" class="kurssihaku" id="kurssi-input" onkeyup="wparkFilter()" placeholder="Hae kurssia..">
+        <div id="<?php echo $taxonomy; ?>-all" class="tabs-panel">
+            <input name="tax_input[<?php echo $taxonomy; ?>][]" value="0" type="hidden">            
+            <ul id="<?php echo $taxonomy; ?>checklist" data-wp-lists="list:symbol" class="categorychecklist form-no-clear">
 
 <?php
     foreach ($terms as $term) {
@@ -250,12 +236,12 @@ function wpark_t_taxonomy_meta_box($post, $meta_box_properties)
             <label class="selectit"><input required value="<?php echo $term->term_id; ?>" name="tax_input[<?php echo $taxonomy; ?>][]" id="in-<?php echo $id; ?>"<?php if ($current === (int)$term->term_id) {
             ?>checked="checked"<?php
         } ?> type="radio"><div class="taxitem"><?php echo $term->name; ?></div></label>
-        </li>
-        <?php
+            </li>
+<?php
     } ?>
-        </ul>
+            </ul>
+        </div>
     </div>
-</div>
 <?php
 }
 
@@ -291,16 +277,16 @@ function wpark_t_callback($post)
     wp_nonce_field(basename(__FILE__), 'wpark_t_nonce');
     $wpark_t_stored_meta = get_post_meta($post->ID); ?>
 
-<div class="meta-row">
-    <div class="meta-th">
-        <label for="t-paivamaara" class="t-row-title">Tentin päivämäärä</label>
-    </div>
-    <div class="meta-td">
+    <div class="meta-row">
+        <div class="meta-th">
+            <label for="t-paivamaara" class="t-row-title">Tentin päivämäärä</label>
+        </div>
+        <div class="meta-td">
         <input type="text" pattern="[0-9]{1,2}.[0-9]{1,2}.[0-9]{4}" class="t-row-content datepicker" required size=8  name="t_paivamaara" id="t-paivamaara" value="<?php if (! empty($wpark_t_stored_meta['t_paivamaara'])) {
         echo esc_attr($wpark_t_stored_meta['t_paivamaara'][0]);
     } ?>"/>
+        </div>
     </div>
-</div>
 
 <?php
 }
@@ -347,15 +333,15 @@ add_action('save_post', 'wpark_t_meta_save');
 
 /* Muuta otsikko metadatan perusteella */
 
-function wpark_filter_post_data( $data, $postarr ) {
-    if($data['post_type'] == 'tentit' && isset($_POST['t_paivamaara']))
-    {
+function wpark_filter_post_data($data, $postarr)
+{
+    if ($data['post_type'] == 'tentit' && isset($_POST['t_paivamaara'])) {
         $pvm = date('d.m.Y', strtotime($_POST[ 't_paivamaara' ]));
         $data['post_title'] = $pvm;
     }
     return $data;
 }
-add_filter( 'wp_insert_post_data' , 'wpark_filter_post_data' , '99', 2 );
+add_filter('wp_insert_post_data', 'wpark_filter_post_data', '99', 2);
 
 /* Templojen lataus */
 
@@ -396,12 +382,12 @@ function pdf_t_uploader_callback($post_id)
 {
     wp_nonce_field(basename(__FILE__), 'custom_pdf_t_nonce'); ?>
 
-<div id="metabox_wrapper">
-    <img id="pdf-tag"></img>
-    <input type="hidden" id="pdf-hidden" name="custom_pdf_data">
-    <input type="button" id="pdf-upload-button" class="button" value="Lisää tentti">
-    <input type="button" id="pdf-delete-button" class="button" value="Poista tentti">
-</div>
+    <div id="metabox_wrapper">
+        <img id="pdf-tag"></img>
+        <input type="hidden" id="pdf-hidden" name="custom_pdf_data">
+        <input type="button" id="pdf-upload-button" class="button" value="Lisää tentti">
+        <input type="button" id="pdf-delete-button" class="button" value="Poista tentti">
+    </div>
 
 <?php
 }
@@ -426,23 +412,21 @@ function wpark_t_settings_cb()
 {
     if (isset($_POST["update_settings"])) {
         $opintomateriaalivastaava = esc_attr($_POST["opintomateriaalivastaava"]);
-        update_option("opintomateriaalivastaava", $opintomateriaalivastaava);
-        ?>
-        <div id="message" class="updated">Settings saved</div>
-        <?php
+        update_option("opintomateriaalivastaava", $opintomateriaalivastaava); ?>
+<div id="message" class="updated">Settings saved</div>
+<?php
     } else {
         $opintomateriaalivastaava = get_option("opintomateriaalivastaava");
-    }
-    ?>
+    } ?>
 <div class="help-page">
     <h1>Tenttiarkiston asetukset</h1>
     <form method="POST" action="">
-    <label for="opintomateriaalivastaava">
-        Opintomateriaalivastaavan email:
-    </label>
-    <input type="text" name="opintomateriaalivastaava" value="<?php echo $opintomateriaalivastaava;?>" />
-    <input type="hidden" name="update_settings" value="Y" />
-    <input type="submit" value="Tallenna" class="button-primary"/>
+        <label for="opintomateriaalivastaava">
+            Opintomateriaalivastaavan email:
+        </label>
+        <input type="text" name="opintomateriaalivastaava" value="<?php echo $opintomateriaalivastaava; ?>" />
+        <input type="hidden" name="update_settings" value="Y" />
+        <input type="submit" value="Tallenna" class="button-primary"/>
     </form>
     <p>
     </p>

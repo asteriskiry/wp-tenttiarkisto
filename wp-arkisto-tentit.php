@@ -356,15 +356,27 @@ function wpark_t_meta_save($post_id)
     if (get_post_type() == 'tentit') {
         $t_title['post_title'] = $kurssi[0]->name . ' - ' . get_post_meta($post_id, 't_paivamaara', true);
     }
+
+    if (isset($_POST[ 'custom_pdf_data' ])) {
+        $pdf_data = json_decode(stripslashes($_POST[ 'custom_pdf_data' ]));
+        if (is_object($pdf_data[0])) {
+            $pdf_data = array( 'id' => intval($pdf_data[0]->id), 'src' => esc_url_raw($pdf_data[0]->src), 'tnBig' => esc_url_raw($pdf_data[0]->tnBig), 'tnMed' => esc_url_raw($pdf_data[0]->tnMed), 'tnSmall' => esc_url_raw($pdf_data[0]->tnSmall) );
+        } else {
+            $pdf_data = [];
+        }
+        update_post_meta($post_id, 'custom_pdf_data', $pdf_data);
+    }
 }
 add_action('save_post', 'wpark_t_meta_save');
 
 /* Muuta otsikko metadatan perusteella */
 
-function wpark_filter_post_data( $data , $postarr ) {
-    $kurssi = get_the_terms($postarr['ID'], 'kurssi');
-    $pvm = get_post_meta($postarr['ID'], 't_paivamaara');
-    $data['post_title'] = $kurssi[0]->name . ' - ' . $pvm[0];
+function wpark_filter_post_data( $data, $postarr ) {
+    if($data['post_type'] == 'tentit' && isset($_POST['t_paivamaara']))
+    {
+        $pvm = date('d.m.Y', strtotime($_POST[ 't_paivamaara' ]));
+        $data['post_title'] = $pvm;
+    }
     return $data;
 }
 add_filter( 'wp_insert_post_data' , 'wpark_filter_post_data' , '99', 2 );
@@ -390,6 +402,33 @@ function wpark_t_load_templates($original_template)
 }
 add_action('template_include', 'wpark_t_load_templates');
 
+function register_metaboxes()
+{
+    add_meta_box(
+        'pdf_t_uploader_metabox',
+        'Tentin tiedosto',
+        'pdf_t_uploader_callback',
+        'tentit',
+        'normal'
+    );
+}
+add_action('add_meta_boxes', 'register_metaboxes');
+
+/* HTML:n generointi lisäyssivulle */
+
+function pdf_t_uploader_callback($post_id)
+{
+    wp_nonce_field(basename(__FILE__), 'custom_pdf_t_nonce'); ?>
+
+<div id="metabox_wrapper">
+    <img id="pdf-tag"></img>
+    <input type="hidden" id="pdf-hidden" name="custom_pdf_data">
+    <input type="button" id="pdf-upload-button" class="button" value="Lisää tentti">
+    <input type="button" id="pdf-delete-button" class="button" value="Poista tentti">
+</div>
+
+<?php
+}
 /* Astetukset-sivu */
 
 function wpark_t_add_help_page()

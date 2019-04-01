@@ -16,7 +16,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 require_once (plugin_dir_path(__FILE__) . 'wp-arkisto-tentit.php' );
 require_once (plugin_dir_path(__FILE__) . 'wp-arkisto-enqueue.php' );
-require_once (plugin_dir_path(__FILE__) . 'wp-arkisto-tentit-uploader.php' );
 
 /* Dashboard-widgetti */
 

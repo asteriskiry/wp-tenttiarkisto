@@ -5,9 +5,7 @@ Plugin can seen in action at [asteriski.fi](http://asteriski.fi)
 
 To do
 -----------
-* Tenttiarkiston uploaderi ei-kirjautuneille käyttäjille
-
-Muuten valmis
+* Sähköpostit lähtee opintomateriaalivastaavalle kahteen kertaan
 
 Riippuvuudet / vaatimukset
 -----------
@@ -20,6 +18,8 @@ Imagick on Imagemagickin php-moduuli joten se täytyy olla myös ladattuna (exte
 Wordpressin asetuksista:
 * Päivämäärät oltava muotoa dd.mm.yyyy (eli wordpressin asetuksissa d.m.Y)
 * Pretty permalinks
+
+Ideana olisi käyttää tätä "Profile Builder" pluginin kanssa.
 
 Vähän ohjeita
 -----------

@@ -53,11 +53,14 @@ if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
 
     /* Väliaikainen kovakoodattu ohje */
     echo '<p><h4>Miten lisätä uusi tentti tenttiarkistoon?</h4></p>
-    <p>Skannaa paperitentti tietokoneelle ja lähetä se .pdf-muodossa opintomateriaalivastaavalle. Voit käyttää yliopiston skannereita (löytyy esimerkiksi Agoran kellarikerroksesta ja 110-luokkien luota) ja lähettää sieltä suoraan mailitse. Opintomateriaalivastaava käy tämän jälkeen lisäämässä pikimmiten tentin tenttiarkistoon.</p>
-    <p>Opintomateriaalivastaava 2019<br>
-    Tiina Nokelainen<br>
-    tmknok [ät] utu.fi</p>';
-
+    <ol>
+        <li>Skannaa ensin paperitentti tietokoneelle (tai ota kuva)</li>
+        <li><a href="https://asteriski.fi/register">Rekisteröidy</a> tai <a href="https://asteriski.fi/wp-admin">kirjaudu sisään</a></li>
+        <li>Valitse vasemmasta yläkulmasta "Uusi" -> "Tentti"</li>
+        <li>Täytä tiedot (pvm, kurssi, tiedosto) ja paina "Lähetä arvio"</li>
+        <li>Jos oikeaa kurssia ei löydy pääset lisäämään niitä vasemmalta kohdasta "Kurssit"</li>
+        <li>Opintomateriaalivastaava hyväksyy tentin</li>
+    </ol>';
     echo '</div>';
     echo '</div>';
 }

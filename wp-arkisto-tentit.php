@@ -162,29 +162,6 @@ function wpark_t_add_roles()
             'upload_files' => true
         )
     );
-    add_role(
-        'exam_admin',
-        'Tenttiarkisto-admin',
-        array(
-            // tentit
-            'edit_exams' => true,
-            'edit_others_exams' => true,
-            'delete_exams' => true,
-            'delete_others_exams' => true,
-            'read_private_exams' => true,
-            'edit_exam' => true,
-            'delete_exam' => true,
-            'read_exam' => true,
-            'publish_exams' => true,
-            // kurssit
-            'manage_courses' => true,
-            'edit_courses' => true,
-            'assign_courses' => true,
-            'delete_courses' => true,
-            // muut
-            'upload_files' => true
-        )
-    );
 }
 add_action('init', 'wpark_t_add_roles');
 
@@ -211,18 +188,18 @@ add_action('init', 'wpark_t_add_caps');
 
 function wpark_t_send_email($ID, $post)
 {
-    //if ( get_post_type( $post ) == 'tentit' )
-    //{
+    if ( get_post_type( $post ) == 'tentit' )
+    {
         // Opintomateriaalivastaavan email
         $opintomateriaalivastaava = get_option("opintomateriaalivastaava");
 
         // Lähetä opintomateriaalivastaavalle
-        //if ('pending' === $new_status && 'new' === $old_status && user_can($post->post_author, 'edit_exams') && ! user_can($post->post_author, 'publish_posts')) {
+        if ('pending' === $new_status && 'new' === $old_status && user_can($post->post_author, 'edit_exams') && ! user_can($post->post_author, 'publish_posts')) {
             $edit_link                = get_edit_post_link($post->ID, '');
             $preview_link             = get_permalink($post->ID) . '&preview=true';
             $username                 = get_userdata($post->post_author);
             $username_last_edit       = get_the_modified_author();
-            $subject                  = '[*] Uusi tentti odottaa hyväksymistäsi: ' . '"'  . $post->post_title . '"';
+            $subject                  = '[*] Uusi tentti odottaa hyväksymistäsi';
             $message                  = 'Uusi tentti odottaa hyväksymistäsi.';
             $message                 .= "\r\n\r\n";
             $message                 .= 'Lisääjä' . ': ' . $username->user_login . "\r\n";
@@ -231,19 +208,18 @@ function wpark_t_send_email($ID, $post)
             $message                 .= 'Viimeisen muokkauksen pvm' . ': ' . $post->post_modified;
             $message                 .= "\r\n\r\n";
             $message                 .= 'Julkaise tästä' . ': ' . $edit_link . "\r\n";
-            $message                 .= 'Näytä tentti' . ': ' . $preview_link;
             $result = wp_mail($opintomateriaalivastaava, $subject, $message);
-        //}
-        // Lähetä tentin postaajalle ilmoitus hyväksymisestä
-        //elseif ('pending' === $old_status && 'publish' === $new_status && user_can($post->post_author, 'edit_exams') && ! user_can($post->post_author, 'publish_exams')) {
-            //$username = get_userdata($post->post_author);
-            //$url      = get_permalink($post->ID);
-            //$subject  = '[*] Lähettämäsi tentti hyväksytty';
-            //$message  = 'Lähettämäsi tentti ' . '"' . $post->post_title . '" ' .  'on nyt hyväksytty tenttiarkistoon!' . "\r\n\r\n";
-            //$message .= $url;
-            //$result = wp_mail($username->user_email, $subject, $message);
-        //}
-    //}
+        }
+         // Lähetä tentin postaajalle ilmoitus hyväksymisestä
+        elseif ('pending' === $old_status && 'publish' === $new_status && user_can($post->post_author, 'edit_exams') && ! user_can($post->post_author, 'publish_exams')) {
+            $username = get_userdata($post->post_author);
+            $url      = get_permalink($post->ID);
+            $subject  = '[*] Lähettämäsi tentti hyväksytty';
+            $message  = 'Lähettämäsi tentti on nyt hyväksytty tenttiarkistoon!' . "\r\n\r\n";
+            $message .= $url;
+            $result = wp_mail($username->user_email, $subject, $message);
+        }
+    }
 }
 add_action('pending_tentit', 'wpark_t_send_email', 10, 3);
 
@@ -402,6 +378,8 @@ function wpark_t_load_templates($original_template)
 }
 add_action('template_include', 'wpark_t_load_templates');
 
+/* Uploaderin HTML */
+
 function register_metaboxes()
 {
     add_meta_box(
@@ -413,8 +391,6 @@ function register_metaboxes()
     );
 }
 add_action('add_meta_boxes', 'register_metaboxes');
-
-/* HTML:n generointi lisäyssivulle */
 
 function pdf_t_uploader_callback($post_id)
 {
@@ -429,6 +405,7 @@ function pdf_t_uploader_callback($post_id)
 
 <?php
 }
+
 /* Astetukset-sivu */
 
 function wpark_t_add_help_page()

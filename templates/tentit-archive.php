@@ -47,11 +47,11 @@ if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
         echo '<td> ' . $maara  . '</td>';
         echo '</tr>';
     }
+    $opintomateriaalivastaava = get_option("opintomateriaalivastaava");
     echo '</tbody>';
     echo '</table>';
     echo 'Tenttiarkistossa on yhteensä ' . $yhtmaara . ' tenttiä';
 
-    /* Väliaikainen kovakoodattu ohje */
     echo '<p><h4>Miten lisätä uusi tentti tenttiarkistoon?</h4></p>
     <ol>
         <li>Skannaa ensin paperitentti tietokoneelle (tai ota kuva)</li>
@@ -61,6 +61,7 @@ if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
         <li>Jos oikeaa kurssia ei löydy pääset lisäämään niitä vasemmalta kohdasta "Kurssit"</li>
         <li>Opintomateriaalivastaava hyväksyy tentin</li>
     </ol>';
+    echo '<p>Voit myös lähettää tentin sähköpostilla opintomateriaalivastaavalle ' . str_replace('@', '[ät]', $opintomateriaalivastaava);
     echo '</div>';
     echo '</div>';
 }

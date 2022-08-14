@@ -24,9 +24,15 @@ addButton.addEventListener( 'click', function() {
 
 pdfUploader.on( 'select', function() {
     var attachment = pdfUploader.state().get('selection').first().toJSON();
+	if(attachment.sizes){
     img.setAttribute( 'src', attachment.sizes.full.url );
     hidden.setAttribute( 'value', JSON.stringify( [{ id: attachment.id, src: attachment.url, tnBig: attachment.sizes.full.url, tnMed: attachment.sizes.medium.url, tnSmall: attachment.sizes.thumbnail.url }]) );
-    toggleVisibility( 'ADD' );
+    } else {
+    img.setAttribute( 'src', attachment.url );
+    hidden.setAttribute( 'value', JSON.stringify( [{ id: attachment.id, src: attachment.url, tnBig: attachment.url, tnMed: attachment.url, tnSmall: attachment.url }]) );
+    
+	}
+	toggleVisibility( 'ADD' );
 } );
 
 /* Poistonappi */

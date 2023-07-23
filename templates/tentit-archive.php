@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * Template Name: Tentit-archive
@@ -10,15 +10,7 @@ get_header();
  */
 ?>
 
-<header class="page-header">
-    <div class="overlay-dark"></div>
-    <div class="container breadcrumbs-wrapper">
-        <div class="breadcrumbs d-flex flex-column justify-content-center">
-            <h3><?php wp_title(''); ?></h3>
-        </div>
-    </div>
-</header>
-
+<h3 class="t-heading"><?php wp_title(''); ?></h3>
 <?php
 $args = array( 'hide_empty=0' );
 
@@ -30,7 +22,7 @@ if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
 <div class="tentit">
     <table id="t-taulukko" class="row-border">
         <thead>
-            <tr class="t-rivi">	
+            <tr class="t-rivi">
                 <th class="t-indeksit">Kurssi </th>
                 <th class="t-indeksit">Tenttejä </th>
             </tr>

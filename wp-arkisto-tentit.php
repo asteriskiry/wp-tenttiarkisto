@@ -46,7 +46,6 @@ function wpark_t_register_post_type()
         'has_archive'           => true,
         'query_var'             => true,
         'capability_type'       => 'post',
-        'map_meta_cap'          => true,
         'capabilities'       => array(
             'publish_posts' => 'publish_exams',
             'edit_posts' => 'edit_exams',
@@ -83,7 +82,6 @@ function wpark_t_register_taxonomy_kurssi()
 {
     $plural = 'Kurssit';
     $singular = 'Kurssi';
-    $slug = 'kurssi';
 
     $labels = array(
         'name'                       => $singular,
@@ -118,6 +116,7 @@ function wpark_t_register_taxonomy_kurssi()
             'delete_terms' => 'delete_courses',
             'assign_terms' => 'assign_courses'
         ),
+		/** @link wpark_t_taxonomy_meta_box */
         'meta_box_cb'           => 'wpark_t_taxonomy_meta_box',
     );
     register_taxonomy('kurssi', 'tentit', $args);
@@ -193,7 +192,6 @@ function wpark_t_send_email($ID, $post)
 
     // Lähetä opintomateriaalivastaavalle
     $edit_link                = get_edit_post_link($post->ID, '');
-    $preview_link             = get_permalink($post->ID) . '&preview=true';
     $username                 = get_userdata($post->post_author);
     $username_last_edit       = get_the_modified_author();
     $subject                  = '[*] Uusi tentti odottaa hyväksymistäsi';
@@ -205,7 +203,7 @@ function wpark_t_send_email($ID, $post)
     $message                 .= 'Viimeisen muokkauksen pvm' . ': ' . $post->post_modified;
     $message                 .= "\r\n\r\n";
     $message                 .= 'Julkaise tästä' . ': ' . $edit_link . "\r\n";
-    $result = wp_mail($opintomateriaalivastaava, $subject, $message);
+    wp_mail($opintomateriaalivastaava, $subject, $message);
 }
 add_action('pending_tentit', 'wpark_t_send_email', 10, 3);
 
@@ -225,7 +223,7 @@ function wpark_t_taxonomy_meta_box($post, $meta_box_properties)
 
         <input type="text" class="kurssihaku" id="kurssi-input" onkeyup="wparkFilter()" placeholder="Hae kurssia..">
         <div id="<?php echo $taxonomy; ?>-all" class="tabs-panel">
-            <input name="tax_input[<?php echo $taxonomy; ?>][]" value="0" type="hidden">            
+            <input name="tax_input[<?php echo $taxonomy; ?>][]" value="0" type="hidden">
             <ul id="<?php echo $taxonomy; ?>checklist" data-wp-lists="list:symbol" class="categorychecklist form-no-clear">
 
 <?php
@@ -347,21 +345,21 @@ add_filter('wp_insert_post_data', 'wpark_filter_post_data', '99', 2);
 
 function wpark_t_load_templates($original_template)
 {
-    if (is_tax('kurssi')) {
-        return plugin_dir_path(__FILE__) . 'templates/kurssit-archive.php';
-    }
-    if (get_query_var('post_type') !== 'tentit') {
-        return $original_template;
-    }
-    if (is_archive() || is_search()) {
-        return plugin_dir_path(__FILE__) . 'templates/tentit-archive.php';
-    } elseif (is_singular('tentit')) {
-        return plugin_dir_path(__FILE__) . 'templates/tentit-single.php';
-    } else {
-        return get_page_template();
-    }
-    return $original_template;
+	if (is_tax('kurssi')) {
+		return plugin_dir_path(__FILE__) . 'templates/kurssit-archive.php';
+	}
+	if (get_query_var('post_type') !== 'tentit') {
+		return $original_template;
+	}
+	if (is_archive() || is_search()) {
+		return plugin_dir_path(__FILE__) . 'templates/tentit-archive.php';
+	} elseif (is_singular('tentit')) {
+		return plugin_dir_path(__FILE__) . 'templates/tentit-single.php';
+	}
+	
+	return get_page_template();
 }
+
 add_action('template_include', 'wpark_t_load_templates');
 
 /* Uploaderin HTML */

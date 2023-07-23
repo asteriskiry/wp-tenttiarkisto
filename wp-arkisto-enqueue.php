@@ -42,38 +42,38 @@ function wpark_front_enqueue_scripts()
     wp_register_style('hover-master-css', plugins_url('assets/hover.css', __FILE__));
     wp_register_style('animatism-css', plugins_url('assets/animatism.css', __FILE__));
     wp_register_style('buttons-css', plugins_url('assets/buttons.css', __FILE__));
-    wp_register_style('datatables-css', plugins_url('assets/datatables.min.css', __FILE__));
-    wp_register_script('datatables-js', plugins_url('assets/datatables.min.js', __FILE__), array( 'jquery' ), true);
+    wp_register_style('tentti-datatables-css', plugins_url('assets/datatables.min.css', __FILE__));
+    wp_register_script('tentti-datatables-js', plugins_url('assets/datatables.min.js', __FILE__), array( 'jquery' ), true);
     wp_register_script('datatables-moment-js', plugins_url('assets/moment.min.js', __FILE__), true);
     wp_register_script('datatables-date-plugin-js', plugins_url('assets/datetime-moment.js', __FILE__), true);
     wp_register_script('font-awesome', plugins_url('assets/fontawesome-all.js', __FILE__), true);
     wp_register_style('font-awesome-legacy', plugins_url('assets/Font-Awesome-legacy/css/font-awesome.min.css', __FILE__));
 
     wp_register_style('wpark-t-front-css', plugins_url('css/front-tentit.css', __FILE__));
-    wp_register_script('wpark-t-front-js', plugins_url('js/front-tentit.js', __FILE__), true);
+    wp_register_script('wpark-t-front-js', plugins_url('js/front-tentit.js', __FILE__), array(
+        'jquery',
+        'jquery-ui-core',
+        'jquery-ui-dialog',
+        'jquery-ui-button',
+        'jquery-ui-position',
+        'tentti-datatables-js',
+    ));
     wp_register_script('wpark-t-kurssit-js', plugins_url('js/kurssit-archive.js', __FILE__), true);
 
-        /* Ladataan koko fronttiin */
-    if (get_query_var('post_type') == 'tentit' || get_query_var('taxonomy') == 'kurssi') {
-
-        wp_enqueue_style('hover-master-css');
-        wp_enqueue_style('animatism-css');
-        wp_enqueue_style('buttons-css');
-        wp_enqueue_style('datatables-css');
-        wp_enqueue_script('datatables-js');
-        wp_enqueue_script('datatables-moment-js');
-        wp_enqueue_script('datatables-date-plugin-js');
+    if (get_query_var('taxonomy') == 'kurssi' || get_query_var('post_type') == 'tentit' || get_query_var('taxonomy') == 'kurssi') {
+        wp_deregister_style('jquery-ui-base-dialog');
+        wp_enqueue_style('jquery-ui-base-dialog', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.1/themes/base/jquery-ui.min.css');
+    
+        wp_enqueue_style('tentti-datatables-css');
+        wp_enqueue_script('tentti-datatables-js');
+        
+        wp_enqueue_style('font-awesome-legacy');
         wp_enqueue_script('font-awesome');
-
-        /* Ladataan vain tenttiarkistolle */
 
         wp_enqueue_script('wpark-t-front-js');
         wp_enqueue_style('wpark-t-front-css');
     }
 
-    if (get_query_var('taxonomy') == 'kurssi') {
-        wp_enqueue_script('wpark-t-kurssit-js');
-    }
 }
 
 add_action('wp_enqueue_scripts', 'wpark_front_enqueue_scripts');

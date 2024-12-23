@@ -12,9 +12,6 @@ jobs:
       steps:
          - name: Checkout Code
            uses: actions/checkout@v3
-        
-         - name: Verify Source Directory
-           run: ls -lah /home/runner/work/wp-tenttiarkisto/wp-tenttiarkisto
       
          - name: Deploy
            uses: easingthemes/ssh-deploy@v2.2.11
@@ -24,6 +21,5 @@ jobs:
               REMOTE_USER: ${{ secrets.DEPLOYUSER_USER }}
               REMOTE_PORT: ${{ secrets.DEPLOYUSER_PORT }}
               TARGET: "/srv/www/www.asteriski.fi/wp-content/plugins/wp-tenttiarkisto/"
-              EXCLUDE: "/.git/"
            with:
-             args: "-avz --progress"
+             args: "-avz --chmod=ug=rwx,o=rx --chown=github-deploy:www-data --progress --exclude='.git/'"

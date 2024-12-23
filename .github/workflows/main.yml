@@ -22,4 +22,4 @@ jobs:
               REMOTE_PORT: ${{ secrets.DEPLOYUSER_PORT }}
               TARGET: "/srv/www/www.asteriski.fi/wp-content/plugins/wp-tenttiarkisto/"
            with:
-             args: "-avz --chmod=ug=rwx,o=rx --chown=github-deploy:www-data --progress --exclude='.git/'"
+             args: "-avz --delete --chmod=ug=rwx,o=rx --chown=github-deploy:www-data --progress --exclude='.git/'"

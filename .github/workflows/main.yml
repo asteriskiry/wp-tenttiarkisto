@@ -14,9 +14,7 @@ jobs:
            uses: easingthemes/ssh-deploy@v2.2.11
            env:
               SSH_PRIVATE_KEY: ${{ secrets.DEPLOYUSER_SSH_KEY }}
-              ARGS: "--delete"
               REMOTE_HOST: ${{ secrets.DEPLOYUSER_HOST }}
               REMOTE_USER: ${{ secrets.DEPLOYUSER_USER }}
               REMOTE_PORT: ${{ secrets.DEPLOYUSER_PORT }}
               TARGET: "/srv/www/www.asteriski.fi/wp-content/plugins/wp-tenttiarkisto"
-              EXCLUDE: "/.git/"

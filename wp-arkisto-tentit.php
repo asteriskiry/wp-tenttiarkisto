@@ -174,9 +174,9 @@ function wpark_t_add_caps()
 
     $capabilities = array("edit_exams", "edit_others_exams", "delete_exams", "delete_others_exams", "read_private_exams", "edit_exam", "delete_exam", "read_exam", "publish_exams", "manage_courses", "edit_courses", "assign_courses", "delete_courses");
     foreach ($capabilities as $cap) {
-        $administrator->add_cap($cap);
-        $editor->add_cap($cap);
-        $author->add_cap($cap);
+        if(!empty($administrator)) $administrator->add_cap($cap);
+        if(!empty($editor)) $editor->add_cap($cap);
+        if(!empty($author)) $author->add_cap($cap);
     }
 }
 add_action('init', 'wpark_t_add_caps');

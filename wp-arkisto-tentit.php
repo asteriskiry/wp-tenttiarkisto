@@ -30,22 +30,26 @@ function wpark_t_register_post_type()
     );
 
     $args = array(
+        'label'                 => $plural,
         'labels'                => $labels,
         'public'                => true,
         'publicly_queryable'    => true,
-        'exclude_from_search'   => false,
-        'show_in_nav_menus'     => true,
-        'show_ui'               => true,
-        'show_in_menu'          => true,
-        'show_in_admin_bar'     => true,
-        'menu_position'         => 10,
-        'menu_icon'             => 'dashicons-welcome-learn-more',
-        'can_export'            => true,
-        'delete_with_user'      => false,
-        'hierarchical'          => false,
-        'has_archive'           => true,
+		'show_ui'               => true,
+		'delete_with_user'      => false,
+		'show_in_rest' => true,
+		'rest_base' => '',
+		'rest_controller_class' => 'WP_REST_Posts_Controller',
+		'has_archive'           => true,
+		'show_in_menu'          => true,
+		'show_in_nav_menus'     => false,
+		'show_in_admin_bar'     => true,
+		'menu_position'         => 10,
+		'menu_icon'             => 'dashicons-welcome-learn-more',
+		'can_export'            => true,
         'query_var'             => true,
         'capability_type'       => 'post',
+        'map_meta_cap'          => true,
+		'hierarchical'          => false,
         'capabilities'       => array(
             'publish_posts' => 'publish_exams',
             'edit_posts' => 'edit_exams',
@@ -57,13 +61,10 @@ function wpark_t_register_post_type()
             'delete_post' => 'delete_exam',
             'read_post' => 'read_exam'
         ),
-        'map_meta_cap' => true,
         'taxonomies'            => array( 'kurssi', ),
         'rewrite'               => array(
             'slug'                  => 'tenttiarkisto',
             'with_front'            => true,
-            'pages'                 => true,
-            'feeds'                 => false,
         ),
         'supports'              => array(
             'title',
@@ -134,7 +135,8 @@ function wpb_show_current_user_attachments($query)
     }
     return $query;
 }
-add_filter('ajax_query_attachments_args', 'wpb_show_current_user_attachments');
+// Maybe not necessary anymore ? - 2024 m
+//add_filter('ajax_query_attachments_args', 'wpb_show_current_user_attachments');
 
 /* Lisää käyttäjäroolit tenttien ja kurssien lisäämiseen */
 
@@ -162,6 +164,7 @@ function wpark_t_add_roles()
         )
     );
 }
+
 add_action('init', 'wpark_t_add_roles');
 
 /* Lisätään custom capabilitit vakiorooleille */
@@ -172,7 +175,18 @@ function wpark_t_add_caps()
     $administrator = get_role('administrator');
     $author = get_role('author');
 
-    $capabilities = array("edit_exams", "edit_others_exams", "delete_exams", "delete_others_exams", "read_private_exams", "edit_exam", "delete_exam", "read_exam", "publish_exams", "manage_courses", "edit_courses", "assign_courses", "delete_courses");
+    $capabilities = array(
+		'publish_exams',
+		'edit_exams',
+		'edit_others_exams',
+		'delete_exams',
+		'delete_others_exams',
+		'read_private_exams',
+		'edit_exam',
+		'delete_exam',
+		'read_exam'
+	);
+
     foreach ($capabilities as $cap) {
         if(!empty($administrator)) $administrator->add_cap($cap);
         if(!empty($editor)) $editor->add_cap($cap);
@@ -211,6 +225,12 @@ add_action('pending_tentit', 'wpark_t_send_email', 10, 3);
 
 function wpark_t_taxonomy_meta_box($post, $meta_box_properties)
 {
+	$myvals = get_post_meta(get_the_ID());
+
+	foreach($myvals as $key=>$val)
+	{
+		echo $key . ' : ' . $val[0] . '<br/>';
+	}
     $taxonomy = $meta_box_properties['args']['taxonomy'];
     $tax = get_taxonomy($taxonomy);
     $terms = get_terms($taxonomy, array('hide_empty' => 0));
@@ -243,192 +263,31 @@ function wpark_t_taxonomy_meta_box($post, $meta_box_properties)
 <?php
 }
 
-/* Tenttien lisäyssivun meta box (pvm, helppi) */
-
-function wpark_t_add_metaboxes()
-{
-    add_meta_box(
-        'wpark_t_meta',
-        'Tentin tiedot',
-        'wpark_t_callback',
-        'tentit',
-        'normal',
-        'high'
-    );
-
-    add_meta_box(
-        'wpark_t_help',
-        'Tiedote',
-        'wpark_t_help_callback',
-        'tentit',
-        'normal',
-        'high'
-    );
-}
-
-add_action('add_meta_boxes', 'wpark_t_add_metaboxes');
-
-/* Lisäyssivun html:n generointi */
-
-function wpark_t_callback($post)
-{
-    wp_nonce_field(basename(__FILE__), 'wpark_t_nonce');
-    $wpark_t_stored_meta = get_post_meta($post->ID); ?>
-
-    <div class="meta-row">
-        <div class="meta-th">
-            <label for="t-paivamaara" class="t-row-title">Tentin päivämäärä</label>
-        </div>
-        <div class="meta-td">
-        <input type="text" pattern="[0-9]{1,2}.[0-9]{1,2}.[0-9]{4}" class="t-row-content datepicker" required size=8  name="t_paivamaara" id="t-paivamaara" value="<?php if (! empty($wpark_t_stored_meta['t_paivamaara'])) {
-        echo esc_attr($wpark_t_stored_meta['t_paivamaara'][0]);
-    } ?>"/>
-        </div>
-    </div>
-
-<?php
-}
-
-function wpark_t_help_callback($post)
-{
-    echo '<div class="meta-help">Lisättyäsi tentin opintomateriaalivastaava hyväksyy tentin pikimmiten.</div>';
-}
-
-/* Metatietojen tallennus */
-
-function wpark_t_meta_save($post_id)
-{
-    $is_autosave = wp_is_post_autosave($post_id);
-    $is_revision = wp_is_post_revision($post_id);
-    $is_valid_nonce = (isset($_POST[ 'wpark_t_nonce' ]) && wp_verify_nonce($_POST[ 'wpark_t_nonce' ], basename(__FILE__))) ? 'true' : 'false';
-
-    if ($is_autosave || $is_revision || !$is_valid_nonce) {
-        return;
-    }
-    if (isset($_POST[ 't_paivamaara' ])) {
-        update_post_meta($post_id, 't_paivamaara', sanitize_text_field($_POST[ 't_paivamaara' ]));
-    }
-
-    $t_title = array();
-    $t_title['ID'] = $post_id;
-    $kurssi = get_the_terms($post_id, 'kurssi');
-
-    if (get_post_type() == 'tentit') {
-        $t_title['post_title'] = $kurssi[0]->name . ' - ' . get_post_meta($post_id, 't_paivamaara', true);
-    }
-
-    if (isset($_POST[ 'custom_pdf_data' ])) {
-        $pdf_data = json_decode(stripslashes($_POST[ 'custom_pdf_data' ]));
-        if (is_object($pdf_data[0])) {
-            $pdf_data = array( 'id' => intval($pdf_data[0]->id), 'src' => esc_url_raw($pdf_data[0]->src), 'tnBig' => esc_url_raw($pdf_data[0]->tnBig), 'tnMed' => esc_url_raw($pdf_data[0]->tnMed), 'tnSmall' => esc_url_raw($pdf_data[0]->tnSmall) );
-        } else {
-            $pdf_data = [];
-        }
-        update_post_meta($post_id, 'custom_pdf_data', $pdf_data);
-    }
-}
-add_action('save_post', 'wpark_t_meta_save');
-
-/* Muuta otsikko metadatan perusteella */
-
-function wpark_filter_post_data($data, $postarr)
-{
-    if ($data['post_type'] == 'tentit' && isset($_POST['t_paivamaara'])) {
-        $pvm = date('d.m.Y', strtotime($_POST[ 't_paivamaara' ]));
-        $data['post_title'] = $pvm;
-    }
-    return $data;
-}
-add_filter('wp_insert_post_data', 'wpark_filter_post_data', '99', 2);
 
 /* Templojen lataus */
 
-function wpark_t_load_templates($original_template)
+function wpark_t_load_archive_templates($original_template)
 {
 	if (is_tax('kurssi')) {
 		return plugin_dir_path(__FILE__) . 'templates/kurssit-archive.php';
 	}
-	if (get_query_var('post_type') !== 'tentit') {
-		return $original_template;
-	}
-	if (is_archive() || is_search()) {
+	if (is_post_type_archive('tentit') || is_search()) {
 		return plugin_dir_path(__FILE__) . 'templates/tentit-archive.php';
-	} elseif (is_singular('tentit')) {
+	}
+
+	return $original_template;
+}
+
+add_action('archive_template', 'wpark_t_load_archive_templates');
+
+function wpark_t_load_singular_templates($original_template)
+{
+	if  (is_singular('tentit')) {
 		return plugin_dir_path(__FILE__) . 'templates/tentit-single.php';
 	}
-	
-	return get_page_template();
+
+	return $original_template;
 }
 
-add_action('template_include', 'wpark_t_load_templates');
-
-/* Uploaderin HTML */
-
-function register_metaboxes()
-{
-    add_meta_box(
-        'pdf_t_uploader_metabox',
-        'Tentin tiedosto',
-        'pdf_t_uploader_callback',
-        'tentit',
-        'normal'
-    );
-}
-add_action('add_meta_boxes', 'register_metaboxes');
-
-function pdf_t_uploader_callback($post_id)
-{
-    wp_nonce_field(basename(__FILE__), 'custom_pdf_t_nonce'); ?>
-
-    <div id="metabox_wrapper">
-        <img id="pdf-tag"></img>
-        <input type="hidden" id="pdf-hidden" name="custom_pdf_data">
-        <input type="button" id="pdf-upload-button" class="button" value="Lisää tentti">
-        <input type="button" id="pdf-delete-button" class="button" value="Poista tentti">
-    </div>
-
-<?php
-}
-
-/* Astetukset-sivu */
-
-function wpark_t_add_help_page()
-{
-    add_submenu_page(
-        'edit.php?post_type=tentit',
-        'Tenttiarkiston asetukset',
-        'Asetukset',
-        'manage_options',
-        't-settings',
-        'wpark_t_settings_cb'
-    );
-}
-
-add_action('admin_menu', 'wpark_t_add_help_page');
-
-function wpark_t_settings_cb()
-{
-    if (isset($_POST["update_settings"])) {
-        $opintomateriaalivastaava = esc_attr($_POST["opintomateriaalivastaava"]);
-        update_option("opintomateriaalivastaava", $opintomateriaalivastaava); ?>
-<div id="message" class="updated">Settings saved</div>
-<?php
-    } else {
-        $opintomateriaalivastaava = get_option("opintomateriaalivastaava");
-    } ?>
-<div class="help-page">
-    <h1>Tenttiarkiston asetukset</h1>
-    <form method="POST" action="">
-        <label for="opintomateriaalivastaava">
-            Opintomateriaalivastaavan email:
-        </label>
-        <input type="text" name="opintomateriaalivastaava" value="<?php echo $opintomateriaalivastaava; ?>" />
-        <input type="hidden" name="update_settings" value="Y" />
-        <input type="submit" value="Tallenna" class="button-primary"/>
-    </form>
-    <p>
-    </p>
-</div>
-
-<?php
-}
+add_action('singular_template', 'wpark_t_load_singular_templates');
+add_action('single_template', 'wpark_t_load_singular_templates');

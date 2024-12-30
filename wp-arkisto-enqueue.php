@@ -60,13 +60,12 @@ function wpark_front_enqueue_scripts()
     ));
     wp_register_script('wpark-t-kurssit-js', plugins_url('js/kurssit-archive.js', __FILE__), true);
 
-    if (get_query_var('taxonomy') == 'kurssi' || get_query_var('post_type') == 'tentit' || get_query_var('taxonomy') == 'kurssi') {
+    if (is_singular('tentit') || is_post_type_archive('tentit') || is_tax('kurssi')) {
         wp_deregister_style('jquery-ui-base-dialog');
-        wp_enqueue_style('jquery-ui-base-dialog', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.1/themes/base/jquery-ui.min.css');
-    
+
         wp_enqueue_style('tentti-datatables-css');
         wp_enqueue_script('tentti-datatables-js');
-        
+
         wp_enqueue_style('font-awesome-legacy');
         wp_enqueue_script('font-awesome');
 

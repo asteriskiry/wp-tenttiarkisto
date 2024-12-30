@@ -44,26 +44,20 @@ while ( $pk_by_year->have_posts() ) : $pk_by_year->the_post();
 
     global $post;
     $title = get_the_title();
-    $custom_pdf_data = get_post_meta($post->ID, 'custom_pdf_data');
-    $pdfurl = $custom_pdf_data[0]['src'];
-    $slug = get_permalink();
-    $pm = get_post_meta( $post->ID, 't_paivamaara', true );
-    $thumbnail = $custom_pdf_data[0]['tnMed'];
+    $pdf_id = (int) carbon_get_post_meta($post->ID, 'gt_file_id');
+	$slug = get_permalink();
+    $pm = carbon_get_post_meta( $post->ID, 't_paivamaara' );
 
     /* HTML: dynaamiset kentät*/
     echo '<tr class="item">';
-    echo '<td><a class="hvr-grow-custom-smaller pdf-link" href="' . $pdfurl . '">' . $title . '</a></td>';
+    echo '<td><a class="hvr-link" href="' . get_the_permalink() . '">' . $title . '</a></td>';
     echo '<td> ' . $pm  . '</td>';
     echo '</tr>';
 endwhile;
 echo '</tbody>';
 echo '</table>';
 	?>
-	<div id='dialog' style='display:none'>
-		<div>
-			<iframe id="riski-pdf" width='100%' height='100%' src=''></iframe>
-		</div>
-	</div>
+
 	<?php
 echo '</div>';
 endif;

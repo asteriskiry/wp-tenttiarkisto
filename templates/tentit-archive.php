@@ -44,7 +44,7 @@ if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
     echo '</table>';
     echo 'Tenttiarkistossa on yhteensä ' . $yhtmaara . ' tenttiä';
 
-    echo '<p><h4>Miten lisätä uusi tentti tenttiarkistoon?</h4></p>
+    echo carbon_get_theme_option('tentit_ohjeistus') ? wpautop(carbon_get_theme_option('tentit_ohjeistus')) :'<p><h4>Miten lisätä uusi tentti tenttiarkistoon?</h4></p>
     <ol>
         <li>Skannaa ensin paperitentti tietokoneelle (tai ota kuva)</li>
         <li><a href="https://asteriski.fi/register">Rekisteröidy</a> tai <a href="https://asteriski.fi/wp-admin">kirjaudu sisään</a></li>
@@ -52,8 +52,8 @@ if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
         <li>Täytä tiedot (pvm, kurssi, tiedosto) ja paina "Lähetä arvio"</li>
         <li>Jos oikeaa kurssia ei löydy pääset lisäämään niitä vasemmalta kohdasta "Kurssit"</li>
         <li>Opintomateriaalivastaava hyväksyy tentin</li>
-    </ol>';
-    echo '<p>Voit myös lähettää tentin sähköpostilla opintomateriaalivastaavalle ' . str_replace('@', '[ät]', $opintomateriaalivastaava);
+    </ol>
+    <p>Voit myös lähettää tentin sähköpostilla opintomateriaalivastaavalle </p>';
     echo '</div>';
     echo '</div>';
 }

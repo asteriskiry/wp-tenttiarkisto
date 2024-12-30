@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * Template Name: Pöytäkirjat-single
@@ -36,11 +36,10 @@ if ( have_posts() ) : while ( have_posts() ) : the_post();
 
     /* Tallennetaan tiedot muuttujiin kannasta */
 
-    $custom_pdf_data = get_post_meta($post->ID, 'custom_pdf_data');
-    $thumbnail = $custom_pdf_data[0]['tnBig'];
-    $pdfurl = $custom_pdf_data[0]['src'];
+	$pdf_id = (int) carbon_get_post_meta($post->ID, 'gt_file_id');
+	$pdfurl = wp_get_attachment_url($pdf_id);
     $slug = get_permalink();
-    $pm = get_post_meta( $post->ID, 't_paivamaara', true );    
+	$pm = carbon_get_post_meta( $post->ID, 't_paivamaara' );
     $kurssi = get_the_terms( $post->ID, 'kurssi' );
     $post_type = get_post_type();
     if ( $post_type )
@@ -50,37 +49,35 @@ if ( have_posts() ) : while ( have_posts() ) : the_post();
     }
 
     /* Generoidaan HTML */
+	echo '<a class="hvr-grow" href="' . $pdfurl . '">Tiedostoon <i class="fa fa-paperclip"></i></a>';
 
-    echo '<div class="t-grid">';
-    echo '<div class="t-thumb">';
-    echo '<div class="btn26">';
-    echo '<img src="' . $thumbnail . '"><div class="ovrly"></div><div class="anim-buttons"><a class="fa fa-paperclip" href="' . $pdfurl . '"></a></div>';
-    echo '</div>';
-    echo '</div>';
-    echo '<div class="t-single-meta">';
-    echo '<div class="t-buttons-left">';
-    echo previous_post_link('%link', '<i class="fa fa-chevron-left"></i> Edellinen');
-    echo '</div>';
-    echo '<div class="t-buttons-right">';
-    echo next_post_link('%link', 'Seuraava <i class="fa fa-chevron-right"></i>');
-    echo '</div>';
-    echo '<br>';
-    echo '<div class="t-single-meta-content">';
-    echo '<table>';
-    echo '<tr>';
-    echo '<td><strong>Kurssi</strong></td><td>' . $kurssi[0]->name . '</td>';
-    echo '</tr><tr>';
-    echo '<td><strong>Päivämäärä</strong></td><td>' . $pm . '</td>';
-    echo '</tr>';
-    echo '</table>';
-    echo '<a class="hvr-grow"href="' . $pdfurl . '">Tiedostoon <i class="fa fa-paperclip"></i></a>';
-    echo '</div>';
+	echo '<div class="t-single-meta-content">';
+	echo '<table>';
+	echo '<tr>';
+	echo '<td><strong>Kurssi</strong></td><td>' . $kurssi[0]->name . '</td>';
+	echo '</tr><tr>';
+	echo '<td><strong>Päivämäärä</strong></td><td>' . $pm . '</td>';
+	echo '</tr>';
+	echo '</table>';
+	echo '</div>';
+
+	echo '<iframe id="riski-pdf" width="100%" height="800px" src="'.$pdfurl.'"></iframe>';
+
+	echo '<div class="t-pagination">';
+	echo '<div class="t-buttons-left">';
+	echo previous_post_link('%link', '<i class="fa fa-chevron-left"></i> Edellinen');
+	echo '</div>';
+	echo '<div class="t-buttons-right">';
+	echo next_post_link('%link', 'Seuraava <i class="fa fa-chevron-right"></i>');
+	echo '</div>';
+	echo '</div>';
+
     echo '<div class="t-buttons">';
-    echo '<a href="' . get_site_url() . '/' . $post_type_slug . '"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Takaisin selailuun</a>'; 
+    echo '<a href="' . get_site_url() . '/' . $post_type_slug . '"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Takaisin selailuun</a>';
+    echo '</div>';
+
     echo '</div>';
     echo '</div>';
-    echo '</div>';
-    echo '</div>';
-endwhile; endif; 
+endwhile; endif;
 
 get_footer();

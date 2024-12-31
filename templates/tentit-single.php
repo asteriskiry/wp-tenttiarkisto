@@ -36,7 +36,7 @@ if ( have_posts() ) : while ( have_posts() ) : the_post();
 
     /* Tallennetaan tiedot muuttujiin kannasta */
 
-	$pdf_id = (int) carbon_get_post_meta($post->ID, 'gt_file_id');
+	$pdf_id = (int) carbon_get_post_meta($post->ID, 't_file_id');
 	$pdfurl = wp_get_attachment_url($pdf_id);
     $slug = get_permalink();
 	$pm = carbon_get_post_meta( $post->ID, 't_paivamaara' );
@@ -49,7 +49,7 @@ if ( have_posts() ) : while ( have_posts() ) : the_post();
     }
 
     /* Generoidaan HTML */
-	echo '<a class="hvr-grow" href="' . $pdfurl . '">Tiedostoon <i class="fa fa-paperclip"></i></a>';
+	echo '<a class="hvr-grow" href="' . $pdfurl . '" download>Lataa tentti <i class="fa fa-paperclip"></i></a>';
 
 	echo '<div class="t-single-meta-content">';
 	echo '<table>';
@@ -61,7 +61,7 @@ if ( have_posts() ) : while ( have_posts() ) : the_post();
 	echo '</table>';
 	echo '</div>';
 
-	echo '<iframe id="riski-pdf" width="100%" height="800px" src="'.$pdfurl.'"></iframe>';
+	echo '<iframe id="riski-pdf" width="100%" src="'.$pdfurl.'"></iframe>';
 
 	echo '<div class="t-pagination">';
 	echo '<div class="t-buttons-left">';

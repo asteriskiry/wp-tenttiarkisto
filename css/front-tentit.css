@@ -393,3 +393,12 @@ a.hvr-grow:hover, a.hvr-grow:focus-visible {
 .takiainen.single-tentit header + .site {
     padding-top: 90px;
 }
+.single-tentit iframe {
+    display: none
+}
+@media screen and (min-width: 831px) {
+    display: block;
+    .single-tentit iframe {
+        height: 1000px;
+    }
+}

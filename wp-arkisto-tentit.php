@@ -225,12 +225,16 @@ add_action('pending_tentit', 'wpark_t_send_email', 10, 3);
 
 function wpark_t_taxonomy_meta_box($post, $meta_box_properties)
 {
+	/*
+	 * Uncomment echo for debug
+	 */
 	$myvals = get_post_meta(get_the_ID());
 
 	foreach($myvals as $key=>$val)
 	{
 		echo $key . ' : ' . $val[0] . '<br/>';
 	}
+
     $taxonomy = $meta_box_properties['args']['taxonomy'];
     $tax = get_taxonomy($taxonomy);
     $terms = get_terms($taxonomy, array('hide_empty' => 0));

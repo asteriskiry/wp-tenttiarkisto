@@ -31,7 +31,7 @@ function crb_attach_theme_options() {
 		->where('post_type', '=', 'tentit')
 		->add_fields([
 			Field::make( 'date', 't_paivamaara', 'Tentin päivämäärä' ),
-			Field::make( 'file', 'gt_file_id', 'Tentin tiedosto' ),
+			Field::make( 'file', 't_file_id', 'Tentin tiedosto' ),
 			Field::make( 'html', 'crb_html' )
 				->set_html('<p>Lisättyäsi tentin opintomateriaalivastaava hyväksyy tentin pikimmiten.</p>'),
 
@@ -50,75 +50,5 @@ add_action('carbon_fields_after_save_post', function ($post_id) {
 			'ID' => $post_id,
 			'post_title' => $new_title,
 		]);
-	}
-});
-
-add_action('init', function () {
-	if(get_option('t_pvm_migration_done')){
-		return;
-	}
-	$args = [
-		'post_type' => 'tentit',
-		'post_status' => 'any',
-		'posts_per_page' => - 1,
-	];
-
-	$query = new WP_Query($args);
-
-	if ($query->have_posts()) {
-		while ($query->have_posts()) {
-			$query->the_post();
-			$post_id = get_the_ID();
-
-			// Get the current meta value
-			$meta_value = get_post_meta($post_id, 't_paivamaara', true);
-			update_post_meta($post_id, 'bu_t_paivamaara', $meta_value);
-
-			// Check if the value matches the d.m.Y format
-			if (preg_match('/^\d{1,2}\.\d{1,2}\.\d{4}$/', $meta_value)) {
-				// Convert d.m.Y to Y-m-d
-				$parts = explode('.', $meta_value);
-				$normalized_date = sprintf('%04d-%02d-%02d', $parts[2], $parts[1], $parts[0]);
-
-				// Update the meta value
-				update_post_meta($post_id, '_t_paivamaara', $normalized_date);
-			}
-		}
-		wp_reset_postdata();
-		update_option('t_pvm_migration_done', 1);
-	}
-});
-
-add_action('init', function () {
-	if(get_option('t_file_migration_done')){
-		return;
-	}
-
-	$args = [
-		'post_type' => 'tentit',
-		'post_status' => 'any',
-		'posts_per_page' => - 1,
-	];
-
-	$query = new WP_Query($args);
-
-	if ($query->have_posts()) {
-		while ($query->have_posts()) {
-			$query->the_post();
-			$post_id = get_the_ID();
-
-			// Get the current meta value
-			$meta_value = get_post_meta($post_id, 'custom_pdf_data', true);
-			update_post_meta($post_id, 'bu_custom_pdf_data', $meta_value);
-
-			// Check if the id exists
-			if (!empty($meta_value['id'])) {
-
-				// Update the meta value
-				update_post_meta($post_id, '_t_file_id', $meta_value['id']);
-			}
-		}
-		wp_reset_postdata();
-		update_option('t_file_migration_done', 1);
 	}
 });

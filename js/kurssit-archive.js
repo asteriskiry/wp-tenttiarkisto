@@ -6,6 +6,18 @@
 
 jQuery(function ($)  {
     $('#t-k-taulukko').DataTable({
+        responsive: {
+            details: {
+                type: 'column',
+            },
+        },
+        columnDefs: [
+            {
+                className: 'dtr-control',
+                orderable: false,
+                targets: 0
+            }
+        ],
         "pageLength": 10,
         "language": {
             "sProcessing":    "Käsitellään...",

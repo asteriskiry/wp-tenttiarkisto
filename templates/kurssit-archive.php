@@ -33,6 +33,7 @@ if ( $pk_by_year-> have_posts() ) :
     <table id="t-taulukko" class="row-border">
         <thead>
             <tr class="t-rivi">
+	            <th class='dtr-control'></th>
                 <th class="t-indeksit">Tentti </th>
                 <th class="t-indeksit">Päivämäärä </th>
             </tr>
@@ -50,6 +51,7 @@ while ( $pk_by_year->have_posts() ) : $pk_by_year->the_post();
 
     /* HTML: dynaamiset kentät*/
     echo '<tr class="item">';
+	echo '<td class="dtr-td"></td>';
     echo '<td><a class="hvr-link" href="' . get_the_permalink() . '">' . $title . '</a></td>';
     echo '<td> ' . $pm  . '</td>';
     echo '</tr>';

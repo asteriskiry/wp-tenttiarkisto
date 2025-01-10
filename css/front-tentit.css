@@ -402,3 +402,33 @@ a.hvr-grow:hover, a.hvr-grow:focus-visible {
         height: 1000px;
     }
 }
+
+
+th.dtr-control {
+    background-color: #2D8F43;
+}
+
+th.dtr-control:before, th.dtr-control:after {
+    display: none !important;
+}
+
+.dtr-td {
+    padding: 5px;
+}
+
+table.dataTable.dtr-column>tbody>tr>td.dtr-control:before {
+    box-shadow: 0 0 6px rgba(15,14,15,.5);
+    width: 1.5rem;
+    height: 1.5rem;
+    position: initial !important;
+    background-color: #2D8F43;
+    margin: auto;
+    aspect-ratio: 1 / 1;
+    font-weight: bold;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+    border: none;
+}

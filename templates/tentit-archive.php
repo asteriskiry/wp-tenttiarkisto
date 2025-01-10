@@ -23,6 +23,7 @@ if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
     <table id="t-taulukko" class="row-border">
         <thead>
             <tr class="t-rivi">
+	            <th class='dtr-control'></th>
                 <th class="t-indeksit">Kurssi </th>
                 <th class="t-indeksit">Tenttejä </th>
             </tr>
@@ -35,6 +36,7 @@ if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
         $maara = $term->count;
         $yhtmaara = $yhtmaara + $maara;
         echo '<tr class="item">';
+		echo '<td class="dtr-td"></td>';
         echo '<td><a class="hvr-grow-custom-smaller" href="' . $slug . '">' . $kurssi . '</a></td>';
         echo '<td> ' . $maara  . '</td>';
         echo '</tr>';

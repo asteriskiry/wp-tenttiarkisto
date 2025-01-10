@@ -6,7 +6,18 @@
 
 jQuery(document).ready(function($) {
     $('#t-taulukko').DataTable({
-        responsive: true,
+        responsive: {
+            details: {
+                type: 'column',
+            },
+        },
+        columnDefs: [
+            {
+                className: 'dtr-control',
+                orderable: false,
+                targets: 0
+            }
+        ],
         "pageLength": 25,
         "language": {
             "sProcessing":    "Käsitellään...",
@@ -32,7 +43,7 @@ jQuery(document).ready(function($) {
             },
         }
     });
-    
+
     $('.pdf-link').on('click', function(e) {
         e.preventDefault();
         let src = $(this).attr('href');

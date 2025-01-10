@@ -39,13 +39,13 @@ function wpark_front_enqueue_scripts()
 
     /* Rekisteröidään frontin scriptit ja tyylit */
 
-    wp_register_style('tentti-datatables-css', plugins_url('assets/datatables.min.css', __FILE__));
-    wp_register_script('tentti-datatables-js', plugins_url('assets/datatables.min.js', __FILE__), array( 'jquery' ), true);
-    wp_register_script('font-awesome', plugins_url('assets/fontawesome-all.js', __FILE__), true);
-    wp_register_style('font-awesome-legacy', plugins_url('assets/Font-Awesome-legacy/css/font-awesome.min.css', __FILE__));
-	wp_register_style('jquery-style', plugins_url('assets/jquery-ui-theme-asteriski/jquery-ui.css', __FILE__));
+    wp_register_style('tentti-datatables-css', plugins_url('assets/datatables.min.css', __FILE__), [], TENTIT_VERSION);
+    wp_register_script('tentti-datatables-js', plugins_url('assets/datatables.min.js', __FILE__), array( 'jquery' ), TENTIT_VERSION,true);
+    wp_register_script('font-awesome', plugins_url('assets/fontawesome-all.js', __FILE__), TENTIT_VERSION,true);
+    wp_register_style('font-awesome-legacy', plugins_url('assets/Font-Awesome-legacy/css/font-awesome.min.css', __FILE__), [], TENTIT_VERSION);
+	wp_register_style('jquery-style', plugins_url('assets/jquery-ui-theme-asteriski/jquery-ui.css', __FILE__), [], TENTIT_VERSION);
 
-    wp_register_style('wpark-t-front-css', plugins_url('css/front-tentit.css', __FILE__));
+    wp_register_style('wpark-t-front-css', plugins_url('css/front-tentit.css', __FILE__), [], TENTIT_VERSION);
     wp_register_script('wpark-t-front-js', plugins_url('js/front-tentit.js', __FILE__), array(
         'jquery',
         'jquery-ui-core',
@@ -53,7 +53,7 @@ function wpark_front_enqueue_scripts()
         'jquery-ui-button',
         'jquery-ui-position',
         'tentti-datatables-js',
-    ), true);
+    ), TENTIT_VERSION, true);
     wp_register_script('wpark-t-kurssit-js', plugins_url('js/kurssit-archive.js', __FILE__), array(
 		'jquery',
 		'jquery-ui-core',
@@ -61,7 +61,7 @@ function wpark_front_enqueue_scripts()
 		'jquery-ui-button',
 		'jquery-ui-position',
 		'tentti-datatables-js',
-	), true);
+	), TENTIT_VERSION,true);
 
     if (is_singular('tentit') || is_post_type_archive('tentit') || is_tax('kurssi')) {
         wp_deregister_style('jquery-ui-base-dialog');

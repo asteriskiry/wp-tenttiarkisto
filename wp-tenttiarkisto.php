@@ -15,6 +15,7 @@ use Carbon_Fields\Field;
 if (!defined('ABSPATH')) {
 	exit;
 }
+const TENTIT_VERSION = '1.0.0'; // For forcing css updates
 require_once(plugin_dir_path(__FILE__) . 'wp-arkisto-tentit.php');
 require_once(plugin_dir_path(__FILE__) . 'wp-arkisto-enqueue.php');
 

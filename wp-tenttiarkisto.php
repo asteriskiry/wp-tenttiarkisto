@@ -41,15 +41,24 @@ function crb_attach_theme_options() {
 		]);
 }
 
-add_action('carbon_fields_after_save_post', function ($post_id) {
-	$paivamaara = carbon_get_post_meta($post_id, 't_paivamaara', true);
+function save_tentti($post_id) {
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+
+	$paivamaara = carbon_get_post_meta($post_id, 't_paivamaara');
 	$kurssi = get_the_terms($post_id, 'kurssi');
 
-	if (get_post_type($post_id) == 'tentit' && $paivamaara && !empty($kurssi[0])) {
+	if ($paivamaara && !empty($kurssi[0])) {
+		remove_action( 'save_post_tentit', 'save_tentti' );
+
 		$new_title = $kurssi[0]->name . ' - ' . $paivamaara;
 		wp_update_post([
 			'ID' => $post_id,
 			'post_title' => $new_title,
 		]);
+
+		add_action( 'save_post_tentit', 'save_tentti' );
 	}
-});
+}
+add_action('save_post_tentit', 'save_tentti');

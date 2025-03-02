@@ -9,6 +9,7 @@
  * License: MIT
  * Collaboration: Roosa Virta, Asteriski ry
  **/
+
 use Carbon_Fields\Container;
 use Carbon_Fields\Field;
 
@@ -31,34 +32,36 @@ function crb_attach_theme_options() {
 	Container::make('post_meta', 'Tentin tiedot')
 		->where('post_type', '=', 'tentit')
 		->add_fields([
-			Field::make( 'date', 't_paivamaara', 'Tentin päivämäärä' ),
-			Field::make( 'file', 't_file_id', 'Tentin tiedosto' ),
-			Field::make( 'html', 'crb_html' )
+			Field::make('date', 't_paivamaara', 'Tentin päivämäärä'),
+			Field::make('file', 't_file_id', 'Tentin tiedosto'),
+			Field::make('html', 'crb_html')
 				->set_html('<p>Lisättyäsi tentin opintomateriaalivastaava hyväksyy tentin pikimmiten.</p>'),
-
-
 
 		]);
 }
 
-function save_tentti($post_id) {
-	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+add_action('wp_insert_post', 'update_tentit_title', 20, 1);
+
+function update_tentit_title($post_id) {
+	if (get_post_type($post_id) !== 'tentit') {
 		return;
 	}
+	// Prevent recursion
+	remove_action('wp_insert_post', 'update_tentit_title', 20);
 
 	$paivamaara = carbon_get_post_meta($post_id, 't_paivamaara');
 	$kurssi = get_the_terms($post_id, 'kurssi');
 
-	if ($paivamaara && !empty($kurssi[0])) {
-		remove_action( 'save_post_tentit', 'save_tentti' );
-
+	if (!empty($paivamaara) && !empty($kurssi) && is_array($kurssi)) {
 		$new_title = $kurssi[0]->name . ' - ' . $paivamaara;
-		wp_update_post([
-			'ID' => $post_id,
-			'post_title' => $new_title,
-		]);
 
-		add_action( 'save_post_tentit', 'save_tentti' );
+		$current_title = get_the_title($post_id);
+		if ($current_title !== $new_title) {
+			wp_update_post([
+				'ID' => $post_id,
+				'post_title' => $new_title,
+			]);
+		}
 	}
+	add_action('wp_insert_post', 'update_tentit_title', 20);
 }
-add_action('save_post_tentit', 'save_tentti');
